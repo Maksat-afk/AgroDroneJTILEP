@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Статусы заказов">
+    <meta name="keywords" content="заказы, статус, дроны">
+    <title>Ваши заказы</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f4f7fa;
+            padding: 20px;
+        }
+        .order-card {
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 15px;
+        }
+        .order-status {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Ваши заказы</h1>
+        <div id="ordersList" class="row"></div>
+    </div>
+    <script>
+        const orders = JSON.parse(localStorage.getItem("orders")) || [];
+        const ordersList = document.getElementById("ordersList");
+
+        if (orders.length === 0) {
+            ordersList.innerHTML = "<p class='text-center'>У вас нет оформленных заказов.</p>";
+        } else {
+            orders.forEach(order => {
+                const orderCard = document.createElement("div");
+                orderCard.className = "col-md-6 order-card card p-3 mb-3";
+
+                orderCard.innerHTML = `
+                    <p><strong>Имя:</strong> ${order.name}</p>
+                    <p><strong>Email:</strong> ${order.email}</p>
+                    <p><strong>Телефон:</strong> ${order.phone}</p>
+                    <p><strong>Адрес:</strong> ${order.address}</p>
+                    <p><strong>Дата:</strong> ${order.date}</p>
+                    <p><strong>Услуга:</strong> ${order.service}</p>
+                    <p><strong>Дополнения:</strong> ${order.extra || "Нет дополнительных данных"}</p>
+                    <p class="order-status"><strong>Статус:</strong> ${order.status}</p>
+                `;
+
+                ordersList.appendChild(orderCard);
+            });
+        }
+    </script>
+</body>
+</html>
